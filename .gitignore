@@ -6,6 +6,10 @@ __pycache__/
 # Model weight files (large, downloaded separately - see README)
 *.caffemodel
 *.pb
+*.pbtxt
+*.prototxt
+models/
+*.part
 
 # Virtual environments
 venv/
@@ -16,9 +20,13 @@ env/
 .DS_Store
 Thumbs.db
 
+# Streamlit cache
+.streamlit/cache/
+
 # Test / sample images (optional - remove if you want to commit sample images)
-*.jpg
-*.jpeg
-*.png
-!examples/*.jpg
-!examples/*.png
+# *.jpg
+# *.jpeg
+# *.png
+# !examples/*.jpg
+# !examples/*.png
+
