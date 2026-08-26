@@ -1,15 +1,16 @@
+[server]
+headless = true
+maxUploadSize = 100
+
+[client]
+showErrorDetails = true
+
+[logger]
+level = "info"
+
 [theme]
 primaryColor = "#F2A65A"
 backgroundColor = "#0D1117"
-secondaryBackgroundColor = "#141A21"
-textColor = "#E8E6E1"
+secondaryBackgroundColor = "#1C2128"
+textColor = "#FFFFFF"
 font = "sans serif"
-
-[server]
-headless = true
-port = 8501
-maxUploadSize = 100
-enableXsrfProtection = true
-
-[client]
-showErrorDetails = false
