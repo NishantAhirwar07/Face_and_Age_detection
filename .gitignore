@@ -3,12 +3,19 @@ __pycache__/
 *.py[cod]
 *.ipynb_checkpoints/
 
-# Model weight files (large, downloaded separately - see README)
+# Model files (keep if downloaded/added to repo)
 *.caffemodel
 *.pb
 *.pbtxt
 *.prototxt
-models/
+models/*
+!models/
+!models/.gitkeep
+!models/README.md
+!models/*.prototxt
+!models/*.caffemodel
+!models/*.pb
+!models/*.pbtxt
 *.part
 
 # Virtual environments
@@ -29,4 +36,3 @@ Thumbs.db
 # *.png
 # !examples/*.jpg
 # !examples/*.png
-

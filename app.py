@@ -6,7 +6,6 @@ import streamlit as st
 import cv2
 import numpy as np
 from PIL import Image
-import io
 from streamlit_config import get_detector
 
 
@@ -43,14 +42,12 @@ def main():
         "Upload an image or use your camera to detect faces and predict ages."
     )
 
-    # Load model (cached)
     try:
         detector = get_detector()
     except Exception as e:
         st.error(f"❌ Failed to load model: {e}")
         st.stop()
 
-    # Sidebar
     st.sidebar.header("⚙️ Settings")
     confidence_threshold = st.sidebar.slider(
         "Face Detection Confidence",
@@ -61,8 +58,6 @@ def main():
     )
 
     input_method = st.sidebar.radio("Input Method", ["📸 Upload Image", "📷 Webcam"])
-
-    # Main content
     col1, col2 = st.columns(2)
 
     if input_method == "📸 Upload Image":
@@ -71,18 +66,19 @@ def main():
         )
 
         if uploaded_file:
-        image_pil = Image.open(uploaded_file).convert("RGB")  # ← Add .convert("RGB")
-image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
+            image_pil = Image.open(uploaded_file).convert("RGB")
+            image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
 
             with col1:
                 st.subheader("Original Image")
                 st.image(image_pil, use_container_width=True)
 
-            # Run detection
             if st.button("🔍 Detect Faces & Ages", type="primary"):
                 with st.spinner("Processing..."):
                     try:
-                        predictions = detector.detect_and_predict(image_cv, confidence_threshold)  # ← Pass slider
+                        predictions = detector.detect_and_predict(
+                            image_cv, confidence_threshold
+                        )
 
                         if predictions:
                             output_image = draw_predictions(image_cv, predictions)
@@ -107,13 +103,13 @@ image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
                     except Exception as e:
                         st.error(f"❌ Error during detection: {e}")
 
-    else:  # Webcam
+    else:
         st.info("📷 Webcam input requires running locally with `streamlit run app.py`")
         picture = st.camera_input("Take a picture")
 
         if picture:
-         image_pil = Image.open(uploaded_file).convert("RGB")  # ← Add .convert("RGB")
-image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
+            image_pil = Image.open(picture).convert("RGB")
+            image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
 
             with col1:
                 st.subheader("Captured Image")
@@ -122,7 +118,9 @@ image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
             if st.button("🔍 Detect Faces & Ages", type="primary"):
                 with st.spinner("Processing..."):
                     try:
-                        predictions = detector.detect_and_predict(image_cv, confidence_threshold)  # ← Pass slider
+                        predictions = detector.detect_and_predict(
+                            image_cv, confidence_threshold
+                        )
 
                         if predictions:
                             output_image = draw_predictions(image_cv, predictions)
@@ -147,7 +145,6 @@ image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
                     except Exception as e:
                         st.error(f"❌ Error during detection: {e}")
 
-    # Footer
     st.markdown("---")
     st.markdown(
         "Built with ❤️ using [Streamlit](https://streamlit.io) | "
