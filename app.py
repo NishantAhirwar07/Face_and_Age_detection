@@ -82,7 +82,7 @@ image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
             if st.button("🔍 Detect Faces & Ages", type="primary"):
                 with st.spinner("Processing..."):
                     try:
-                        predictions = detector.detect_and_predict(image_cv)
+                        predictions = detector.detect_and_predict(image_cv, confidence_threshold)  # ← Pass slider
 
                         if predictions:
                             output_image = draw_predictions(image_cv, predictions)
@@ -122,7 +122,7 @@ image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
             if st.button("🔍 Detect Faces & Ages", type="primary"):
                 with st.spinner("Processing..."):
                     try:
-                        predictions = detector.detect_and_predict(image_cv)
+                        predictions = detector.detect_and_predict(image_cv, confidence_threshold)  # ← Pass slider
 
                         if predictions:
                             output_image = draw_predictions(image_cv, predictions)
