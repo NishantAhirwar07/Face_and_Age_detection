@@ -71,8 +71,8 @@ def main():
         )
 
         if uploaded_file:
-            image_pil = Image.open(uploaded_file)
-            image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
+        image_pil = Image.open(uploaded_file).convert("RGB")  # ← Add .convert("RGB")
+image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
 
             with col1:
                 st.subheader("Original Image")
@@ -112,8 +112,8 @@ def main():
         picture = st.camera_input("Take a picture")
 
         if picture:
-            image_pil = Image.open(picture)
-            image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
+         image_pil = Image.open(uploaded_file).convert("RGB")  # ← Add .convert("RGB")
+image_cv = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
 
             with col1:
                 st.subheader("Captured Image")
