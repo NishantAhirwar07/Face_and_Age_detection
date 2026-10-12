@@ -152,3 +152,37 @@ class FaceAgeDetector:
             results.append(((x, y, w, h), age_label, confidence))
 
         return results
+    def detect_faces(self, image: np.ndarray, confidence_threshold: float = 0.5) -> List[Tuple[int, int, int, int]]:
+    """Detect faces in an image."""
+    if self._face_net is None:
+        raise RuntimeError("Model not loaded. Call load() first.")
+    
+    h, w = image.shape[:2]
+    blob = cv2.dnn.blobFromImage(image, 1.0, (300, 300), [104, 117, 123], False, False)
+    self._face_net.setInput(blob)
+    detections = self._face_net.forward()
+    
+    faces = []
+    for i in range(detections.shape[2]):
+        confidence = detections[0, 0, i, 2]
+        if confidence > confidence_threshold:  # ← Use parameter
+            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+            x1, y1, x2, y2 = box.astype("int")
+            x, y, width, height = x1, y1, x2 - x1, y2 - y1
+            faces.append((x, y, width, height))
+    
+    return faces
+
+def detect_and_predict(
+    self, image: np.ndarray, confidence_threshold: float = 0.5
+) -> List[Tuple[Tuple[int, int, int, int], str, float]]:
+    """Detect faces and predict their ages."""
+    faces = self.detect_faces(image, confidence_threshold)  # ← Pass threshold
+    results = []
+    for x, y, w, h in faces:
+        face_roi = image[y : y + h, x : x + w]
+        if face_roi.size == 0:
+            continue
+        age_label, confidence = self.predict_age(face_roi)
+        results.append(((x, y, w, h), age_label, confidence))
+    return results
